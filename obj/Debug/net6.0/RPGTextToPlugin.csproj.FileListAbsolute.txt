@@ -1,0 +1,15 @@
+C:\Users\Tomi\Desktop\MalachiGame\RPGTextToPlugin\bin\Debug\net6.0\RPGTextToPlugin.exe
+C:\Users\Tomi\Desktop\MalachiGame\RPGTextToPlugin\bin\Debug\net6.0\RPGTextToPlugin.deps.json
+C:\Users\Tomi\Desktop\MalachiGame\RPGTextToPlugin\bin\Debug\net6.0\RPGTextToPlugin.runtimeconfig.json
+C:\Users\Tomi\Desktop\MalachiGame\RPGTextToPlugin\bin\Debug\net6.0\RPGTextToPlugin.dll
+C:\Users\Tomi\Desktop\MalachiGame\RPGTextToPlugin\bin\Debug\net6.0\RPGTextToPlugin.pdb
+C:\Users\Tomi\Desktop\MalachiGame\RPGTextToPlugin\obj\Debug\net6.0\RPGTextToPlugin.csproj.AssemblyReference.cache
+C:\Users\Tomi\Desktop\MalachiGame\RPGTextToPlugin\obj\Debug\net6.0\RPGTextToPlugin.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Tomi\Desktop\MalachiGame\RPGTextToPlugin\obj\Debug\net6.0\RPGTextToPlugin.AssemblyInfoInputs.cache
+C:\Users\Tomi\Desktop\MalachiGame\RPGTextToPlugin\obj\Debug\net6.0\RPGTextToPlugin.AssemblyInfo.cs
+C:\Users\Tomi\Desktop\MalachiGame\RPGTextToPlugin\obj\Debug\net6.0\RPGTextToPlugin.csproj.CoreCompileInputs.cache
+C:\Users\Tomi\Desktop\MalachiGame\RPGTextToPlugin\obj\Debug\net6.0\RPGTextToPlugin.dll
+C:\Users\Tomi\Desktop\MalachiGame\RPGTextToPlugin\obj\Debug\net6.0\refint\RPGTextToPlugin.dll
+C:\Users\Tomi\Desktop\MalachiGame\RPGTextToPlugin\obj\Debug\net6.0\RPGTextToPlugin.pdb
+C:\Users\Tomi\Desktop\MalachiGame\RPGTextToPlugin\obj\Debug\net6.0\RPGTextToPlugin.genruntimeconfig.cache
+C:\Users\Tomi\Desktop\MalachiGame\RPGTextToPlugin\obj\Debug\net6.0\ref\RPGTextToPlugin.dll
