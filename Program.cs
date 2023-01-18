@@ -94,11 +94,13 @@ internal class Program
 
         // Display the file contents by using a foreach loop.
         System.Console.WriteLine("Contents of "+ globals.fileLocation +" = \n");
+        System.Console.WriteLine("---------------------------------------------------");
         foreach (string line in lines)
         {
             // Use a tab to indent each line of the file.
             Console.WriteLine("\t" + line);
         }
+        System.Console.WriteLine("---------------------------------------------------");
 
         // Keep the console window open in debug mode.
         Console.WriteLine("\n\nPress any key to continue.");
@@ -121,7 +123,11 @@ internal class Program
     {
         bool gotFile = false;
 
-        Console.WriteLine("Give location (either c:\\[path] or just the name if in same folder) (.txt included)");
+        Console.WriteLine("Give location (either c:\\[path] or just the name if in same folder) (.txt included)\n");
+        Console.WriteLine("Example 1: \tC:\\temp\\test.txt\n\t\t^ (file can be anywhere)\n");
+        Console.WriteLine("Example 2: \ttest.txt\n\t\t^ (file in same folder as this software)\n");
+
+        Console.Write("Location: ");
 
         try
         {
