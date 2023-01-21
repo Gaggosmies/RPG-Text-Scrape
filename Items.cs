@@ -34,7 +34,8 @@ namespace RPGTextToPlugin
             using (StreamWriter sw = File.CreateText(outputLocation))
             {
                 // Wrap in json array, first json object always null in RPG maker
-                sw.WriteLine("[\nnull,");
+                sw.WriteLine("[");
+                sw.WriteLine("null,");
 
                 int i = 0;
                 foreach (JObject jObject in itemJsonArray.Children<JObject>())
@@ -48,7 +49,8 @@ namespace RPGTextToPlugin
                     }
                 }
 
-                sw.Write("\n]");
+                sw.WriteLine();
+                sw.Write("]");
             }
 
 
