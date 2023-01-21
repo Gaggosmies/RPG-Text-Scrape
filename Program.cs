@@ -1,6 +1,4 @@
 ﻿using RPGTextToPlugin;
-using System.IO;
-using static System.Net.Mime.MediaTypeNames;
 
 internal class Program
 {
