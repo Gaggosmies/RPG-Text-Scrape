@@ -1,14 +1,28 @@
-﻿namespace RPGTextToPlugin
+﻿using Newtonsoft.Json.Linq;
+using RPGTextToPlugin.jsonClasses;
+using System.Text.Json.Serialization;
+
+namespace RPGTextToPlugin
 {
     internal class Items
     {
         public static bool DoItemsStuff(Common.Globals globals)
         {
-            globals.greetingText = "Items stuff (unimplemented for now)";
-            Console.WriteLine("Unimplemented for now.");
+            string fileLocationItemsJson = Common.debugLocation(1);
+            JArray itemJsonArray;
 
-            Console.WriteLine("\n\nPress any key to continue.");
-            System.Console.ReadKey();
+            // check if file is actually found
+            if (File.Exists(fileLocationItemsJson))
+            {
+                string jsonString = System.IO.File.ReadAllText(fileLocationItemsJson);
+                itemJsonArray = JArray.Parse(jsonString);
+            }
+            else
+            {
+                return false;
+            }
+
+
 
             return false;
         }
