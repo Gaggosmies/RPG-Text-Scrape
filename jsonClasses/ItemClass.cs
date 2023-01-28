@@ -26,9 +26,9 @@
         public int id { get; set; }
         public int animationId { get; set; }
         public bool consumable { get; set; }
-        public Damage? damage { get; set; }
-        public string? description { get; set; }
-        public List<Effect>? effects { get; set; }
+        public Damage damage { get; set; }
+        public string description { get; set; }
+        public List<Effect> effects { get; set; }
         public int hitType { get; set; }
         public int iconIndex { get; set; }
         public int itypeId { get; set; }
