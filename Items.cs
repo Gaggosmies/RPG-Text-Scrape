@@ -7,6 +7,32 @@ namespace RPGTextToPlugin
 {
     internal class Items
     {
+        public const string constName = "Name: ";
+        public const string constId = "Id: ";
+        public const string constDescription = "Description: ";
+        public const string constAnimationId = "AnimationId: ";
+        public const string constConsumable = "Consumable: ";
+        public const string constHitType = "HitType: ";
+        public const string constIconIndex = "IconIndex: ";
+        public const string constItypeId = "ItypeId: ";
+        public const string constNote = "Note: ";
+        public const string constOccasion = "Occasion: ";
+        public const string constPrice = "Price: ";
+        public const string constRepeats = "Repeats: ";
+        public const string constScope = "Scope: ";
+        public const string constSpeed = "Speed: ";
+        public const string constSuccessRate = "SuccessRate: ";
+        public const string constTpGain = "TpGain: ";
+        public const string constEffectCode = "Effect Code: ";
+        public const string constEffectDataId = "Effect DataId: ";
+        public const string constEffectValue1 = "Effect Value1: ";
+        public const string constEffectValue2 = "Effect Value2: ";
+        public const string constDamageCritical = "Damage Critical: ";
+        public const string constDamageElementId = "Damage ElementId: ";
+        public const string constDamageFormula = "Damage Formula: ";
+        public const string constDamageType = "Damage Type: ";
+        public const string constDamageVariance = "Damage Variance: ";
+
         public static string GetItemsJsonString()
         {
             // todo: fix file location?
@@ -71,6 +97,45 @@ namespace RPGTextToPlugin
             return itemObject;
         }
 
+        public static void printExampleItem()
+        {
+            string outputLocation = System.AppDomain.CurrentDomain.BaseDirectory + "gottenItems.txt";
+            using (StreamWriter sw = File.CreateText(outputLocation))
+            {
+                sw.WriteLine($"#{constName}: My name");
+                sw.WriteLine($"#{constId}: 1");
+                sw.WriteLine($"#{constDescription}: I am description");
+                sw.WriteLine($"#{constAnimationId}: 1");
+                sw.WriteLine($"#{constConsumable}: true");
+                sw.WriteLine($"#{constHitType}: 1");
+                sw.WriteLine($"#{constIconIndex}: 1");
+                sw.WriteLine($"#{constItypeId}: 1");
+                sw.WriteLine($"#{constNote}: This is note text");
+                sw.WriteLine($"#{constOccasion}: 1");
+                sw.WriteLine($"#{constPrice}: 150");
+                sw.WriteLine($"#{constRepeats}: 1");
+                sw.WriteLine($"#{constScope}: 1");
+                sw.WriteLine($"#{constSpeed}: 1");
+                sw.WriteLine($"#{constSuccessRate}: 1");
+                sw.WriteLine($"#{constTpGain}: 1");
+                sw.WriteLine($"\t#{constEffectCode}: 1");
+                sw.WriteLine($"\t#{constEffectDataId}: 1");
+                sw.WriteLine($"\t#{constEffectValue1}: 1");
+                sw.WriteLine($"\t#{constEffectValue2}: 1");
+                sw.WriteLine($"\t#{constDamageCritical}: true");
+                sw.WriteLine($"\t#{constDamageElementId}: 1");
+                sw.WriteLine($"\t#{constDamageFormula}: v[1] = 1;");
+                sw.WriteLine($"\t#{constDamageType}: 1");
+                sw.WriteLine($"\t#{constDamageVariance}: 1");
+                sw.WriteLine();
+                sw.Close();
+            }
+
+            Console.WriteLine($"Printed to {outputLocation}");
+            Console.WriteLine("\n\nPress the any key to continue...");
+            System.Console.ReadKey();
+        }
+
         public static bool ReadItemsStuff(Common.Globals globals)
         {
             string itemJsonString;
@@ -99,41 +164,41 @@ namespace RPGTextToPlugin
 
                     // check if name given
                     if (!(string.IsNullOrEmpty(item.name)))
-                        sw.WriteLine($"name: {item.name}");
+                        sw.WriteLine($"{constName}{item.name}");
                     else
                         Console.WriteLine($"Missing name on the {lineNumber}");
 
                     // write only valid variables
                     if (item.id != default(int))
-                        sw.WriteLine($"id: {item.id}");
+                        sw.WriteLine($"{constId}{item.id}");
                     if (!(string.IsNullOrEmpty(item.description)))
-                        sw.WriteLine($"description: {item.description}");
+                        sw.WriteLine($"{constDescription}{item.description}");
                     if (item.animationId != default(int))
-                        sw.WriteLine($"animationId: {item.animationId}");
+                        sw.WriteLine($"{constAnimationId}{item.animationId}");
                     if (item.consumable != null)
-                        sw.WriteLine($"consumable: {item.consumable}");
+                        sw.WriteLine($"{constConsumable}{item.consumable}");
                     if (item.hitType != default(int))
-                        sw.WriteLine($"hitType: {item.hitType}");
+                        sw.WriteLine($"{constHitType}{item.hitType}");
                     if (item.iconIndex != default(int))
-                        sw.WriteLine($"iconIndex: {item.iconIndex}");
+                        sw.WriteLine($"{constIconIndex}{item.iconIndex}");
                     if (item.itypeId != default(int))
-                        sw.WriteLine($"itypeId: {item.itypeId}");
+                        sw.WriteLine($"{constItypeId}{item.itypeId}");
                     if (!(string.IsNullOrEmpty(item.note)))
-                        sw.WriteLine($"note: {item.note}");
+                        sw.WriteLine($"{constNote}{item.note}");
                     if (item.occasion != default(int))
-                        sw.WriteLine($"occasion: {item.occasion}");
+                        sw.WriteLine($"{constOccasion}{item.occasion}");
                     if (item.price != default(int))
-                        sw.WriteLine($"price: {item.price}");
+                        sw.WriteLine($"{constPrice}{item.price}");
                     if (item.repeats != default(int))
-                        sw.WriteLine($"repeats: {item.repeats}");
+                        sw.WriteLine($"{constRepeats}{item.repeats}");
                     if (item.scope != default(int))
-                        sw.WriteLine($"scope: {item.scope}");
+                        sw.WriteLine($"{constScope}{item.scope}");
                     if (item.speed != default(int))
-                        sw.WriteLine($"speed: {item.speed}");
+                        sw.WriteLine($"{constSpeed}{item.speed}");
                     if (item.successRate != default(int))
-                        sw.WriteLine($"successRate: {item.successRate}");
+                        sw.WriteLine($"{constSuccessRate}{item.successRate}");
                     if (item.tpGain != default(int))
-                        sw.WriteLine($"tpGain: {item.tpGain}");
+                        sw.WriteLine($"{constTpGain}{item.tpGain}");
 
                     // go through classes within class
                     foreach (jsonClasses.Effect effects in item.effects)
@@ -144,26 +209,26 @@ namespace RPGTextToPlugin
                         }
 
                         if (effects.code != default(int))
-                            sw.WriteLine($"\tEffect code: {effects.code}");
+                            sw.WriteLine($"\t{constEffectCode} {effects.code}");
                         if (effects.dataId != default(int))
-                            sw.WriteLine($"\tEffect dataId: {effects.dataId}");
+                            sw.WriteLine($"\t{constEffectDataId}{effects.dataId}");
                         if (effects.value1 != default(int))
-                            sw.WriteLine($"\tEffect value1: {effects.value1}");
+                            sw.WriteLine($"\t{constEffectValue1}{effects.value1}");
                         if (effects.value2 != default(int))
-                            sw.WriteLine($"\tEffect value2: {effects.value2}");
+                            sw.WriteLine($"\t{constEffectValue2}{effects.value2}");
                     }
 
                     if (item.damage.critical != null)
-                        sw.WriteLine($"\tdamage critical: {item.damage.critical}");
+                        sw.WriteLine($"\t{constDamageCritical}{item.damage.critical}");
                     if (item.damage.elementId != default(int))
-                        sw.WriteLine($"\tdamage elementId: {item.damage.elementId}");
+                        sw.WriteLine($"\t{constDamageElementId}{item.damage.elementId}");
                     if (!(string.IsNullOrEmpty(item.damage.formula)))
-                        sw.WriteLine($"\tdamage formula: {item.damage.formula}");
+                        sw.WriteLine($"\t{constDamageFormula}{item.damage.formula}");
                     if (item.damage.type != default(int))
-                        sw.WriteLine($"\tdamage type: {item.damage.type}");
+                        sw.WriteLine($"\t{constDamageType}{item.damage.type}");
                     if (item.damage.variance != default(int))
-                        sw.WriteLine($"\t{item.damage.variance}");
- 
+                        sw.WriteLine($"\t{constDamageVariance}{item.damage.variance}");
+
 
                     // start a new line
                     sw.WriteLine();
@@ -178,6 +243,7 @@ namespace RPGTextToPlugin
 
             return false;
         }
+        
         public static bool WriteItemsStuff(Common.Globals globals)
         {
             JArray itemJsonArray = new JArray();
@@ -189,19 +255,15 @@ namespace RPGTextToPlugin
             for (int i = 0; i < 10; i++)
             {
                 jsonClasses.Root tempObject = new jsonClasses.Root { };
-
                 InitializeItemClass(tempObject);
 
                 tempObject.id = i;
                 // todo: add more parameters 
 
-                string json = JsonConvert.SerializeObject(tempObject);
 
-                //Console.WriteLine(json);
 
-                JObject newTempStuff = JObject.Parse(json);
-
-                itemJsonArray.Add(newTempStuff);
+                // turn class object into JSON and add it to the array
+                itemJsonArray.Add(JObject.Parse(JsonConvert.SerializeObject(tempObject)));
             }
 
 

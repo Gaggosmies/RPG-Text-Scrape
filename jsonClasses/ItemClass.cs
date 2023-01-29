@@ -32,8 +32,8 @@
         public int hitType { get; set; }
         public int iconIndex { get; set; }
         public int itypeId { get; set; }
-        public string? name { get; set; }
-        public string? note { get; set; }
+        public string name { get; set; }
+        public string note { get; set; }
         public int occasion { get; set; }
         public int price { get; set; }
         public int repeats { get; set; }

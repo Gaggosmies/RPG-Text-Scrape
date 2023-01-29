@@ -31,6 +31,7 @@ internal class Program
             }
             Console.WriteLine("2. Write Items");
             Console.WriteLine("3. Read Items");
+            Console.WriteLine("4. Print item example");
 
             Console.WriteLine("9. Give text file location");
             Console.WriteLine("0. Cancel");
@@ -70,6 +71,10 @@ internal class Program
 
                     case 3:
                         Items.ReadItemsStuff(globals);
+                        break;
+
+                    case 4:
+                        Items.printExampleItem();
                         break;
 
                     case 9:
