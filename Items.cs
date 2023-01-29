@@ -45,7 +45,7 @@ namespace RPGTextToPlugin
                 output = output.Trim();
                 return output;
             }
-            else 
+            else
                 return "";
         }
 
@@ -264,8 +264,14 @@ namespace RPGTextToPlugin
         {
             JArray itemJsonArray = new JArray();
             string inputLocation = System.AppDomain.CurrentDomain.BaseDirectory + itemsTxtName;
-            string outputLocation = System.AppDomain.CurrentDomain.BaseDirectory + itemsJsonName;
+            // todo: relative location to items.json
+            // string outputLocation = System.AppDomain.CurrentDomain.BaseDirectory + itemsJsonName;
+            string outputLocation = Common.debugLocation(1);
             string[] lines;
+            jsonClasses.Root tempObject = new jsonClasses.Root();
+            jsonClasses.Damage tempDamage = new jsonClasses.Damage();
+            List<Effect> tempEffects = new List<Effect>();
+            jsonClasses.Effect tempEffect = new jsonClasses.Effect();
 
             // check if file is actually found
             if (File.Exists(inputLocation))
@@ -273,23 +279,250 @@ namespace RPGTextToPlugin
             else
                 throw new FileNotFoundException("Custom Error Message: input txt file not found at: " + inputLocation);
 
-            int i = 0;
-                
-            foreach (string line in lines)
+            int i = 1;
+
+            using (StreamWriter sw = File.CreateText(outputLocation))
             {
-                jsonClasses.Root tempObject = new jsonClasses.Root { };
                 InitializeItemClass(tempObject);
-
                 tempObject.id = i;
-                
-                // todo: add more parameters 
+
+                foreach (string line in lines)
+                {
+                    line.Trim();
+
+                    // if item is fully checked
+                    if (string.IsNullOrEmpty(line))
+                    {
+                        // set objects in main object
+                        tempObject.damage = tempDamage;
+                        if (tempEffect != null)
+                            tempEffects.Add(tempEffect);
+                        if (tempEffects.Count > 0)
+                            tempObject.effects = tempEffects;
+
+                        // turn class object into JSON and add it to the array
+                        itemJsonArray.Add(JObject.Parse(JsonConvert.SerializeObject(tempObject)));
+
+                        // initialize the objects again
+                        tempObject = new jsonClasses.Root { };
+                        InitializeItemClass(tempObject);
+                        tempObject.id = ++i;
+
+                        tempEffect = new Effect();
+                        tempEffects = new List<Effect>();
+                        tempDamage = new Damage();
+
+                        continue;
+                    }
+
+                    // skip # (comments)
+                    if (line[0] == '#')
+                        continue;
+
+                    if (line.IndexOf(constName) >= 0)
+                    {
+                        tempObject.name = (FindAndTrimFromText(line, constName));
+                        continue;
+                    }
+
+                    // id not used (so the software can change ids :))
+                    // if (line.IndexOf(constId) >= 0)
+                    // {
+                    //     tempObject.id = Int32.Parse(FindAndTrimFromText(line, constId));
+                    //     continue;
+                    // }
+
+                    if (line.IndexOf(constDescription) >= 0)
+                    {
+                        tempObject.description = (FindAndTrimFromText(line, constDescription));
+                        continue;
+                    }
+
+                    if (line.IndexOf(constAnimationId) >= 0)
+                    {
+                        tempObject.animationId = Int32.Parse(FindAndTrimFromText(line, constAnimationId));
+                        continue;
+                    }
+
+                    if (line.IndexOf(constConsumable) >= 0)
+                    {
+                        tempObject.consumable = Convert.ToBoolean(FindAndTrimFromText(line, constConsumable));
+                        continue;
+                    }
+
+                    if (line.IndexOf(constHitType) >= 0)
+                    {
+                        tempObject.hitType = Int32.Parse(FindAndTrimFromText(line, constHitType));
+                        continue;
+                    }
+
+                    if (line.IndexOf(constIconIndex) >= 0)
+                    {
+                        tempObject.iconIndex = Int32.Parse(FindAndTrimFromText(line, constIconIndex));
+                        continue;
+                    }
+
+                    if (line.IndexOf(constItypeId) >= 0)
+                    {
+                        tempObject.itypeId = Int32.Parse(FindAndTrimFromText(line, constItypeId));
+                        continue;
+                    }
+
+                    if (line.IndexOf(constNote) >= 0)
+                    {
+                        tempObject.note = FindAndTrimFromText(line, constNote);
+                        continue;
+                    }
+
+                    if (line.IndexOf(constOccasion) >= 0)
+                    {
+                        tempObject.occasion = Int32.Parse(FindAndTrimFromText(line, constOccasion));
+                        continue;
+                    }
+
+                    if (line.IndexOf(constPrice) >= 0)
+                    {
+                        tempObject.price = Int32.Parse(FindAndTrimFromText(line, constPrice));
+                        continue;
+                    }
+
+                    if (line.IndexOf(constRepeats) >= 0)
+                    {
+                        tempObject.repeats = Int32.Parse(FindAndTrimFromText(line, constRepeats));
+                        continue;
+                    }
+
+                    if (line.IndexOf(constScope) >= 0)
+                    {
+                        tempObject.scope = Int32.Parse(FindAndTrimFromText(line, constScope));
+                        continue;
+                    }
+
+                    if (line.IndexOf(constSpeed) >= 0)
+                    {
+                        tempObject.speed = Int32.Parse(FindAndTrimFromText(line, constSpeed));
+                        continue;
+                    }
+
+                    if (line.IndexOf(constSuccessRate) >= 0)
+                    {
+                        tempObject.successRate = Int32.Parse(FindAndTrimFromText(line, constSuccessRate));
+                        continue;
+                    }
+
+                    if (line.IndexOf(constTpGain) >= 0)
+                    {
+                        tempObject.tpGain = Int32.Parse(FindAndTrimFromText(line, constTpGain));
+                        continue;
+                    }
+
+                  
+                    if (line.IndexOf(constEffectCode) >= 0)
+                    {
+                        // if there is something in the array already
+                        if (tempEffects.Count > 0)
+                        {
+                            // if the value is not null
+                            if(tempEffects[tempEffects.Count - 1].code != default(int))
+                            {
+                                // there is one effect saved, therefore let's make another
+                                tempEffects.Add(tempEffect);
+                                tempEffect = new Effect();
+                            }
+                        }
+
+                        tempEffect.code = Int32.Parse(FindAndTrimFromText(line, constEffectCode));                            
+                        continue;
+                    }
+
+                    if (line.IndexOf(constEffectDataId) >= 0)
+                    {
+                        // if there is something in the array already
+                        if (tempEffects.Count > 0)
+                        {
+                            // if the value is not null
+                            if(tempEffects[tempEffects.Count - 1].dataId != default(int))
+                            {
+                                // there is one effect saved, therefore let's make another
+                                tempEffects.Add(tempEffect);
+                                tempEffect = new Effect();
+                            }
+                        }
+
+                        tempEffect.dataId = Int32.Parse(FindAndTrimFromText(line, constEffectDataId));                            
+                        continue;
+                    }
+
+                    if (line.IndexOf(constEffectValue1) >= 0)
+                    {
+                        // if there is something in the array already
+                        if (tempEffects.Count > 0)
+                        {
+                            // if the value is not null
+                            if(tempEffects[tempEffects.Count - 1].value1 != default(int))
+                            {
+                                // there is one effect saved, therefore let's make another
+                                tempEffects.Add(tempEffect);
+                                tempEffect = new Effect();
+                            }
+                        }
+
+                        tempEffect.value1 = Int32.Parse(FindAndTrimFromText(line, constEffectValue1));                            
+                        continue;
+                    }
+
+                    if (line.IndexOf(constEffectValue2) >= 0)
+                    {
+                        // if there is something in the array already
+                        if (tempEffects.Count > 0)
+                        {
+                            // if the value is not null
+                            if(tempEffects[tempEffects.Count - 1].value2 != default(int))
+                            {
+                                // there is one effect saved, therefore let's make another
+                                tempEffects.Add(tempEffect);
+                                tempEffect = new Effect();
+                            }
+                        }
+
+                        tempEffect.value2 = Int32.Parse(FindAndTrimFromText(line, constEffectValue2));
+                        continue;
+                    }
 
 
+                    if (line.IndexOf(constDamageCritical) >= 0)
+                    {
+                        tempDamage.critical = Convert.ToBoolean(FindAndTrimFromText(line, constDamageCritical));
+                        continue;
+                    }
 
-                // turn class object into JSON and add it to the array
-                itemJsonArray.Add(JObject.Parse(JsonConvert.SerializeObject(tempObject)));
+                    if (line.IndexOf(constDamageElementId) >= 0)
+                    {
+                        tempDamage.elementId = Int32.Parse(FindAndTrimFromText(line, constDamageElementId));
+                        continue;
+                    }
+
+                    if (line.IndexOf(constDamageFormula) >= 0)
+                    {
+                        tempDamage.formula = (FindAndTrimFromText(line, constDamageFormula));
+                        continue;
+                    }
+
+                    if (line.IndexOf(constDamageType) >= 0)
+                    {
+                        tempDamage.type = Int32.Parse(FindAndTrimFromText(line, constDamageType));
+                        continue;
+                    }
+
+                    if (line.IndexOf(constDamageVariance) >= 0)
+                    {
+                        tempDamage.variance = Int32.Parse(FindAndTrimFromText(line, constDamageVariance));
+                        continue;
+                    }
+                }
             }
-            
+
+            i = 0;
 
             // write output into a file using RPG maker format
             using (StreamWriter sw = File.CreateText(outputLocation))
@@ -298,7 +531,7 @@ namespace RPGTextToPlugin
                 sw.WriteLine("[");
                 sw.WriteLine("null,");
 
-                
+
                 foreach (JObject jObject in itemJsonArray.Children<JObject>())
                 {
                     i++;
