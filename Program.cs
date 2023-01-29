@@ -23,11 +23,14 @@ internal class Program
 
             Console.WriteLine();
 
+            // todo: fix txt file checkings
             if (txtFileFound)
             {
                 Console.WriteLine("1. Crafting");
-                Console.WriteLine("2. Items");
+                
             }
+            Console.WriteLine("2. Write Items");
+            Console.WriteLine("3. Read Items");
 
             Console.WriteLine("9. Give text file location");
             Console.WriteLine("0. Cancel");
@@ -49,27 +52,35 @@ internal class Program
 
             if (txtFileFound)
             {
-                if (command == 1)
-                {
-                    Crafting.DoCraftingStuff(globals);
-                    continue;
-                }
+                switch (command){
+                    case 1:
+                        Crafting.DoCraftingStuff(globals);
+                        break;
 
-
-                if (command == 2)
-                {
-                    Items.DoItemsStuff(globals);
-                    continue;
+                    default: 
+                        globals.greetingText = "Invalid Command";
+                        break;
                 }
             }
+            
+            switch (command){
+                    case 2:
+                        Items.WriteItemsStuff(globals);
+                        break;
 
-            if (command == 9)
-            {
-                Texts.GetTextFile(globals);
-                continue;
+                    case 3:
+                        Items.ReadItemsStuff(globals);
+                        break;
+
+                    case 9:
+                        Texts.GetTextFile(globals);
+                        break;
+
+                    default: 
+                        globals.greetingText = "Invalid Command";
+                        break;
             }
 
-            globals.greetingText = "Invalid Command";
         } while (command != 0);
     }
 }

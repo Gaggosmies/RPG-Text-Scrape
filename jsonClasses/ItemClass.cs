@@ -8,7 +8,7 @@
     {
         public bool critical { get; set; }
         public int elementId { get; set; }
-        public string? formula { get; set; }
+        public string formula { get; set; }
         public int type { get; set; }
         public int variance { get; set; }
     }
