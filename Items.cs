@@ -7,6 +7,8 @@ namespace RPGTextToPlugin
 {
     internal class Items
     {
+        public const string itemsTxtName = "gottenItems.txt";
+        public const string itemsJsonName = "gottenItems.json";
         public const string constName = "Name: ";
         public const string constId = "Id: ";
         public const string constDescription = "Description: ";
@@ -32,6 +34,20 @@ namespace RPGTextToPlugin
         public const string constDamageFormula = "Damage Formula: ";
         public const string constDamageType = "Damage Type: ";
         public const string constDamageVariance = "Damage Variance: ";
+
+        public static string FindAndTrimFromText(string input, string removeText)
+        {
+            string output;
+            int index = input.IndexOf(removeText);
+            if (index >= 0)
+            {
+                output = input.Remove(index, removeText.Length);
+                output = output.Trim();
+                return output;
+            }
+            else 
+                return "";
+        }
 
         public static string GetItemsJsonString()
         {
@@ -99,7 +115,7 @@ namespace RPGTextToPlugin
 
         public static void printExampleItem()
         {
-            string outputLocation = System.AppDomain.CurrentDomain.BaseDirectory + "gottenItems.txt";
+            string outputLocation = System.AppDomain.CurrentDomain.BaseDirectory + itemsTxtName;
             using (StreamWriter sw = File.CreateText(outputLocation))
             {
                 sw.WriteLine($"#{constName}: My name");
@@ -139,7 +155,7 @@ namespace RPGTextToPlugin
         public static bool ReadItemsStuff(Common.Globals globals)
         {
             string itemJsonString;
-            string outputLocation = System.AppDomain.CurrentDomain.BaseDirectory + "gottenItems.txt";
+            string outputLocation = System.AppDomain.CurrentDomain.BaseDirectory + itemsTxtName;
 
 
             itemJsonString = GetItemsJsonString();
@@ -243,21 +259,29 @@ namespace RPGTextToPlugin
 
             return false;
         }
-        
+
         public static bool WriteItemsStuff(Common.Globals globals)
         {
             JArray itemJsonArray = new JArray();
-            string outputLocation = System.AppDomain.CurrentDomain.BaseDirectory + "gottenItems.json";
+            string inputLocation = System.AppDomain.CurrentDomain.BaseDirectory + itemsTxtName;
+            string outputLocation = System.AppDomain.CurrentDomain.BaseDirectory + itemsJsonName;
+            string[] lines;
 
-            // itemJsonArray = GetItemsJsonArray();
+            // check if file is actually found
+            if (File.Exists(inputLocation))
+                lines = System.IO.File.ReadAllLines(inputLocation);
+            else
+                throw new FileNotFoundException("Custom Error Message: input txt file not found at: " + inputLocation);
 
-
-            for (int i = 0; i < 10; i++)
+            int i = 0;
+                
+            foreach (string line in lines)
             {
                 jsonClasses.Root tempObject = new jsonClasses.Root { };
                 InitializeItemClass(tempObject);
 
                 tempObject.id = i;
+                
                 // todo: add more parameters 
 
 
@@ -265,8 +289,7 @@ namespace RPGTextToPlugin
                 // turn class object into JSON and add it to the array
                 itemJsonArray.Add(JObject.Parse(JsonConvert.SerializeObject(tempObject)));
             }
-
-
+            
 
             // write output into a file using RPG maker format
             using (StreamWriter sw = File.CreateText(outputLocation))
@@ -275,7 +298,7 @@ namespace RPGTextToPlugin
                 sw.WriteLine("[");
                 sw.WriteLine("null,");
 
-                int i = 0;
+                
                 foreach (JObject jObject in itemJsonArray.Children<JObject>())
                 {
                     i++;
