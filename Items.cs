@@ -26,6 +26,32 @@ namespace RPGTextToPlugin
             }
         }
 
+        public static jsonClasses.Root InitializeItemClass(jsonClasses.Root itemObject) {
+            itemObject.id = 0;
+            itemObject.animationId = 0;
+            itemObject.consumable = true;
+            itemObject.damage = new jsonClasses.Damage { critical = false, elementId = 0, formula = "", type = 0, variance = 0 };
+            itemObject.description = "";
+            itemObject.effects = new List<Effect> {
+                // new jsonClasses.Effect {code = 0, dataId = 0, value1 = 0, value2 = 0},
+                // new jsonClasses.Effect {code = 0,dataId = 0, value1 = 0, value2 = 0}
+                };
+            itemObject.hitType = 0;
+            itemObject.iconIndex = 0;
+            itemObject.itypeId = 0;
+            itemObject.name = "";
+            itemObject.note = "";
+            itemObject.occasion = 0;
+            itemObject.price = 0;
+            itemObject.repeats = 0;
+            itemObject.scope = 0;
+            itemObject.speed = 0;
+            itemObject.successRate = 0;
+            itemObject.tpGain = 0;
+
+            return itemObject;
+        }
+
         public static bool DoItemsStuff(Common.Globals globals)
         {
             JArray itemJsonArray = new JArray();
@@ -38,27 +64,10 @@ namespace RPGTextToPlugin
             {
                 jsonClasses.Root tempObject = new jsonClasses.Root { };
 
+                InitializeItemClass(tempObject);
+
                 tempObject.id = i;
-                tempObject.animationId = 0;
-                tempObject.consumable = true;
-                tempObject.damage = new jsonClasses.Damage { critical = false, elementId = 0, formula = "v[2] = 1; 0", type = 1, variance = 0 };
-                tempObject.description = "Do it " + i;
-                tempObject.effects = new List<Effect> {
-                new jsonClasses.Effect {code = 44, dataId = 2, value1 = 1, value2 = 0},
-                new jsonClasses.Effect {code = 11,dataId = 0, value1 = 0, value2 = 25}
-                };
-                tempObject.hitType = 0;
-                tempObject.iconIndex = i+1;
-                tempObject.itypeId = 0;
-                tempObject.name = "Myname";
-                tempObject.note = "hi";
-                tempObject.occasion = 0;
-                tempObject.price = 0;
-                tempObject.repeats = 0;
-                tempObject.scope = 0;
-                tempObject.speed = 0;
-                tempObject.successRate = 0;
-                tempObject.tpGain = 0;
+                // todo: add more parameters 
 
                 string json = JsonConvert.SerializeObject(tempObject);
 
