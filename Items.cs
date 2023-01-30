@@ -219,11 +219,6 @@ namespace RPGTextToPlugin
                     // go through classes within class
                     foreach (jsonClasses.Effect effects in item.effects)
                     {
-                        if (effects == null)
-                        {
-                            continue;
-                        }
-
                         if (effects.code != default(int))
                             sw.WriteLine($"\t{constEffectCode} {effects.code}");
                         if (effects.dataId != default(int))
@@ -325,7 +320,7 @@ namespace RPGTextToPlugin
                         continue;
                     }
 
-                    // id not used (so the software can change ids :))
+                    // id not used (so this software can change ids :))
                     // if (line.IndexOf(constId) >= 0)
                     // {
                     //     tempObject.id = Int32.Parse(FindAndTrimFromText(line, constId));
@@ -334,7 +329,7 @@ namespace RPGTextToPlugin
 
                     if (line.IndexOf(constDescription) >= 0)
                     {
-                        tempObject.description = (FindAndTrimFromText(line, constDescription));
+                        tempObject.description = (FindAndTrimFromText(line, constDescription)).Replace("\\n", "\n");
                         continue;
                     }
 
