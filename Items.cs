@@ -188,7 +188,7 @@ namespace RPGTextToPlugin
                     if (item.id != default(int))
                         sw.WriteLine($"{constId}{item.id}");
                     if (!(string.IsNullOrEmpty(item.description)))
-                        sw.WriteLine($"{constDescription}{item.description}");
+                        sw.WriteLine($"{constDescription}{item.description.Replace("\n", "\\n")}");
                     if (item.animationId != default(int))
                         sw.WriteLine($"{constAnimationId}{item.animationId}");
                     if (item.consumable != null)
