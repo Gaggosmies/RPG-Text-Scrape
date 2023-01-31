@@ -25,10 +25,12 @@ namespace RPGTextToPlugin
         public const string constSpeed = "Speed: ";
         public const string constSuccessRate = "SuccessRate: ";
         public const string constTpGain = "TpGain: ";
+        public const string constEffectStart = "EffectStart";
         public const string constEffectCode = "Effect Code: ";
         public const string constEffectDataId = "Effect DataId: ";
         public const string constEffectValue1 = "Effect Value1: ";
         public const string constEffectValue2 = "Effect Value2: ";
+        // public const string constEffectEnd = "EffectEnd";
         public const string constDamageCritical = "Damage Critical: ";
         public const string constDamageElementId = "Damage ElementId: ";
         public const string constDamageFormula = "Damage Formula: ";
@@ -120,13 +122,13 @@ namespace RPGTextToPlugin
             {
                 sw.WriteLine($"#{constName}: My name");
                 sw.WriteLine($"#{constId}: 1");
-                sw.WriteLine($"#{constDescription}: I am description");
+                sw.WriteLine($"#{constDescription}: I am description\nThis is antoher line");
                 sw.WriteLine($"#{constAnimationId}: 1");
                 sw.WriteLine($"#{constConsumable}: true");
                 sw.WriteLine($"#{constHitType}: 1");
                 sw.WriteLine($"#{constIconIndex}: 1");
                 sw.WriteLine($"#{constItypeId}: 1");
-                sw.WriteLine($"#{constNote}: This is note text");
+                sw.WriteLine($"#{constNote}: This is note text\nThis is another line");
                 sw.WriteLine($"#{constOccasion}: 1");
                 sw.WriteLine($"#{constPrice}: 150");
                 sw.WriteLine($"#{constRepeats}: 1");
@@ -134,15 +136,17 @@ namespace RPGTextToPlugin
                 sw.WriteLine($"#{constSpeed}: 1");
                 sw.WriteLine($"#{constSuccessRate}: 1");
                 sw.WriteLine($"#{constTpGain}: 1");
+                sw.WriteLine($"#{constEffectStart}");
                 sw.WriteLine($"\t#{constEffectCode}: 1");
                 sw.WriteLine($"\t#{constEffectDataId}: 1");
                 sw.WriteLine($"\t#{constEffectValue1}: 1");
                 sw.WriteLine($"\t#{constEffectValue2}: 1");
-                sw.WriteLine($"\t#{constDamageCritical}: true");
-                sw.WriteLine($"\t#{constDamageElementId}: 1");
-                sw.WriteLine($"\t#{constDamageFormula}: v[1] = 1;");
-                sw.WriteLine($"\t#{constDamageType}: 1");
-                sw.WriteLine($"\t#{constDamageVariance}: 1");
+                // sw.WriteLine($"#{constEffectEnd}");
+                sw.WriteLine($"#{constDamageCritical}: true");
+                sw.WriteLine($"#{constDamageElementId}: 1");
+                sw.WriteLine($"#{constDamageFormula}: v[1] = 1;");
+                sw.WriteLine($"#{constDamageType}: 1");
+                sw.WriteLine($"#{constDamageVariance}: 1");
                 sw.WriteLine();
                 sw.Close();
             }
@@ -200,7 +204,7 @@ namespace RPGTextToPlugin
                     if (item.itypeId != default(int))
                         sw.WriteLine($"{constItypeId}{item.itypeId}");
                     if (!(string.IsNullOrEmpty(item.note)))
-                        sw.WriteLine($"{constNote}{item.note}");
+                        sw.WriteLine($"{constNote}{item.note.Replace("\n", "\\n")}");
                     if (item.occasion != default(int))
                         sw.WriteLine($"{constOccasion}{item.occasion}");
                     if (item.price != default(int))
@@ -219,6 +223,9 @@ namespace RPGTextToPlugin
                     // go through classes within class
                     foreach (jsonClasses.Effect effects in item.effects)
                     {
+                        // set starting message for each Effect
+                        sw.WriteLine($"{constEffectStart}");
+
                         if (effects.code != default(int))
                             sw.WriteLine($"\t{constEffectCode} {effects.code}");
                         if (effects.dataId != default(int))
@@ -227,19 +234,21 @@ namespace RPGTextToPlugin
                             sw.WriteLine($"\t{constEffectValue1}{effects.value1}");
                         if (effects.value2 != default(int))
                             sw.WriteLine($"\t{constEffectValue2}{effects.value2}");
+
+                        // set ending message for each Effect
+                        // sw.WriteLine($"{constEffectEnd}");
                     }
 
                     if (item.damage.critical != null)
-                        sw.WriteLine($"\t{constDamageCritical}{item.damage.critical}");
+                        sw.WriteLine($"{constDamageCritical}{item.damage.critical}");
                     if (item.damage.elementId != default(int))
-                        sw.WriteLine($"\t{constDamageElementId}{item.damage.elementId}");
+                        sw.WriteLine($"{constDamageElementId}{item.damage.elementId}");
                     if (!(string.IsNullOrEmpty(item.damage.formula)))
-                        sw.WriteLine($"\t{constDamageFormula}{item.damage.formula}");
+                        sw.WriteLine($"{constDamageFormula}{item.damage.formula}");
                     if (item.damage.type != default(int))
-                        sw.WriteLine($"\t{constDamageType}{item.damage.type}");
+                        sw.WriteLine($"{constDamageType}{item.damage.type}");
                     if (item.damage.variance != default(int))
-                        sw.WriteLine($"\t{constDamageVariance}{item.damage.variance}");
-
+                        sw.WriteLine($"{constDamageVariance}{item.damage.variance}");
 
                     // start a new line
                     sw.WriteLine();
@@ -333,6 +342,7 @@ namespace RPGTextToPlugin
                         continue;
                     }
 
+                    // todo: animation id numbered by index?
                     if (line.IndexOf(constAnimationId) >= 0)
                     {
                         tempObject.animationId = Int32.Parse(FindAndTrimFromText(line, constAnimationId));
@@ -365,7 +375,7 @@ namespace RPGTextToPlugin
 
                     if (line.IndexOf(constNote) >= 0)
                     {
-                        tempObject.note = FindAndTrimFromText(line, constNote);
+                        tempObject.note = FindAndTrimFromText(line, constNote).Replace("\\n", "\n");
                         continue;
                     }
 
@@ -411,80 +421,49 @@ namespace RPGTextToPlugin
                         continue;
                     }
 
-                  
-                    if (line.IndexOf(constEffectCode) >= 0)
-                    {
-                        // if there is something in the array already
-                        if (tempEffects.Count > 0)
-                        {
-                            // if the value is not null
-                            if(tempEffects[tempEffects.Count - 1].code != default(int))
-                            {
-                                // there is one effect saved, therefore let's make another
-                                tempEffects.Add(tempEffect);
-                                tempEffect = new Effect();
-                            }
-                        }
 
-                        tempEffect.code = Int32.Parse(FindAndTrimFromText(line, constEffectCode));                            
+                    // Effects
+                    if (line.IndexOf(constEffectStart) >= 0)
+                    {
+                        // add new effect to array
+                        tempEffects.Add(new Effect());
+                        continue;
+                    }
+
+                    if (line.IndexOf(constEffectCode) >= 0)
+                    {                    
+                        tempEffects[tempEffects.Count - 1].code = Int32.Parse(FindAndTrimFromText(line, constEffectCode));
                         continue;
                     }
 
                     if (line.IndexOf(constEffectDataId) >= 0)
                     {
-                        // if there is something in the array already
-                        if (tempEffects.Count > 0)
-                        {
-                            // if the value is not null
-                            if(tempEffects[tempEffects.Count - 1].dataId != default(int))
-                            {
-                                // there is one effect saved, therefore let's make another
-                                tempEffects.Add(tempEffect);
-                                tempEffect = new Effect();
-                            }
-                        }
-
-                        tempEffect.dataId = Int32.Parse(FindAndTrimFromText(line, constEffectDataId));                            
+                        tempEffects[tempEffects.Count - 1].dataId = Int32.Parse(FindAndTrimFromText(line, constEffectDataId));
                         continue;
                     }
 
                     if (line.IndexOf(constEffectValue1) >= 0)
                     {
-                        // if there is something in the array already
-                        if (tempEffects.Count > 0)
-                        {
-                            // if the value is not null
-                            if(tempEffects[tempEffects.Count - 1].value1 != default(int))
-                            {
-                                // there is one effect saved, therefore let's make another
-                                tempEffects.Add(tempEffect);
-                                tempEffect = new Effect();
-                            }
-                        }
-
-                        tempEffect.value1 = Int32.Parse(FindAndTrimFromText(line, constEffectValue1));                            
+                        tempEffects[tempEffects.Count - 1].value1 = Int32.Parse(FindAndTrimFromText(line, constEffectValue1));
                         continue;
                     }
 
                     if (line.IndexOf(constEffectValue2) >= 0)
                     {
-                        // if there is something in the array already
-                        if (tempEffects.Count > 0)
-                        {
-                            // if the value is not null
-                            if(tempEffects[tempEffects.Count - 1].value2 != default(int))
-                            {
-                                // there is one effect saved, therefore let's make another
-                                tempEffects.Add(tempEffect);
-                                tempEffect = new Effect();
-                            }
-                        }
-
-                        tempEffect.value2 = Int32.Parse(FindAndTrimFromText(line, constEffectValue2));
+                        tempEffects[tempEffects.Count - 1].value2 = Int32.Parse(FindAndTrimFromText(line, constEffectValue2));
                         continue;
                     }
 
+                    // todo: is this necessary?
+                    // if (line.IndexOf(constEffectEnd) >= 0)
+                    // {
+                    //     // add new effect to array
+                    //     tempEffects.Add(new Effect());
+                    //     continue;
+                    // }
 
+
+                    // Damage
                     if (line.IndexOf(constDamageCritical) >= 0)
                     {
                         tempDamage.critical = Convert.ToBoolean(FindAndTrimFromText(line, constDamageCritical));

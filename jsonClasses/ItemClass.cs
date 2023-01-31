@@ -19,6 +19,14 @@
         public int dataId { get; set; }
         public int value1 { get; set; }
         public int value2 { get; set; }
+
+        public Effect()
+        {
+            code = 0;
+            dataId = 0;
+            value1 = 0;
+            value2 = 0;
+        }
     }
 
     public class Root
