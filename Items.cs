@@ -122,13 +122,13 @@ namespace RPGTextToPlugin
             {
                 sw.WriteLine($"#{constName}: My name");
                 sw.WriteLine($"#{constId}: 1");
-                sw.WriteLine($"#{constDescription}: I am description\nThis is antoher line");
+                sw.WriteLine($"#{constDescription}: I am description\\nThis is another line");
                 sw.WriteLine($"#{constAnimationId}: 1");
                 sw.WriteLine($"#{constConsumable}: true");
                 sw.WriteLine($"#{constHitType}: 1");
                 sw.WriteLine($"#{constIconIndex}: 1");
                 sw.WriteLine($"#{constItypeId}: 1");
-                sw.WriteLine($"#{constNote}: This is note text\nThis is another line");
+                sw.WriteLine($"#{constNote}: This is note text\\nThis is another line");
                 sw.WriteLine($"#{constOccasion}: 1");
                 sw.WriteLine($"#{constPrice}: 150");
                 sw.WriteLine($"#{constRepeats}: 1");
@@ -254,6 +254,8 @@ namespace RPGTextToPlugin
                     sw.WriteLine();
                 }
 
+                // write END as a dummy line so the write works properly
+                sw.WriteLine("END");
                 sw.Close();
             }
 
@@ -275,7 +277,6 @@ namespace RPGTextToPlugin
             jsonClasses.Root tempObject = new jsonClasses.Root();
             jsonClasses.Damage tempDamage = new jsonClasses.Damage();
             List<Effect> tempEffects = new List<Effect>();
-            jsonClasses.Effect tempEffect = new jsonClasses.Effect();
 
             // check if file is actually found
             if (File.Exists(inputLocation))
@@ -299,8 +300,6 @@ namespace RPGTextToPlugin
                     {
                         // set objects in main object
                         tempObject.damage = tempDamage;
-                        if (tempEffect != null)
-                            tempEffects.Add(tempEffect);
                         if (tempEffects.Count > 0)
                             tempObject.effects = tempEffects;
 
@@ -312,7 +311,6 @@ namespace RPGTextToPlugin
                         InitializeItemClass(tempObject);
                         tempObject.id = ++i;
 
-                        tempEffect = new Effect();
                         tempEffects = new List<Effect>();
                         tempDamage = new Damage();
 
